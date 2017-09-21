@@ -14,8 +14,8 @@
 
 ## Demo and Docs
 
-`dev: npm run serve`
-`build: npm run build:doc`
+* dev: `npm run serve`
+* build: `npm run build:doc`
 
 ## License
 
