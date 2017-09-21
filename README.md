@@ -1,20 +1,18 @@
-# yt-component
+# YT.Plugins.Doc
 
-> A Vue.js component
+> 此框架用于将平台中组件生成为文档
 
-# Usage
+# 技术栈
+    styleguide，jsdoc，vue2.0，MarkDown
 
     <yt-component text="Hello World!"></yt-component>
 
 ## Installation
 
-### Using yarn
-
-`yarn add yt-component`
-
-### Using npm
-
-`npm i --save yt-component`
+### Using git
+* git checkout https://github.com/yangwch/YT.Plugins.Doc.git
+* cd YT.Plugins.Doc
+* npm install
 
 ## Demo and Docs
 
