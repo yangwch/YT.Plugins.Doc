@@ -16,6 +16,19 @@ module.exports = {
               }
           ]
       },
+      {
+          name: 'yt-table',
+          content: 'docs/table/Introduction.md',
+          components: 'src/table/table.vue',
+          // ignore: ['src/ignored-component/ignored-component.vue'],
+          sections: [
+              /* One item for every different demo or doc of the component */
+              /*{
+                  name: '示例1',
+                  content: 'docs/table/UseCase1.md'
+              }*/
+          ]
+      },
     {
       /* The component itself */
       name: 'yt-component',

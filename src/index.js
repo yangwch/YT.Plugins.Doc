@@ -8,10 +8,8 @@ var comps = {
     'yt-tree-grid': ytTreeGrid
 };
 
-console.log(ElementUI);
 export default {
   install: function (Vue){
-
       for(var key in comps){
           Vue.component(key, comps[key]);
       }

@@ -116,7 +116,6 @@
 </style>
 <script>
     import 'element-ui/lib/theme-default/index.css'
-    import Vue from 'vue';
     import * as ElementUI from './../../node_modules/element-ui/lib/index'
 
     export default {
