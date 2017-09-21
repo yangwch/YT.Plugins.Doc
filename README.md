@@ -3,9 +3,7 @@
 > 此框架用于将平台中组件生成为文档
 
 # 技术栈
-    styleguide，jsdoc，vue2.0，MarkDown
-
-    <yt-component text="Hello World!"></yt-component>
+    styleguide + jsdoc + vue2.0 + MarkDown
 
 ## Installation
 
@@ -16,7 +14,8 @@
 
 ## Demo and Docs
 
-`npm run serve`
+`dev: npm run serve`
+`build: npm run build:doc`
 
 ## License
 
