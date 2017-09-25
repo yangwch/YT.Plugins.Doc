@@ -1,5 +1,5 @@
 echarts示例
-![echarts示例](./styleguide/static/img/demo.png)
+![echarts示例](/static/img/demo.png)
 ```html
 new Vue({
     data(){
