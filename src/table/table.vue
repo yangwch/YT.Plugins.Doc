@@ -32,7 +32,7 @@
 	}
 </style>
 <script>
-    import * as ElementUI from './../../node_modules/element-ui/lib/index'
+    import * as ElementUI from 'element-ui/lib/index'
 	export default {
         name: 'yt-table',
         components: {
