@@ -461,6 +461,32 @@
                     '[object Object]': 'object'
                 };
                 return map[toString.call(obj)];
+            },
+            /**
+            * 设置选中id，触发事件 'on-selection-change'
+            *
+            * @public
+            * @param {Array} chkIds - 选中的id
+            * @param {Array} isCheck - 是否选中
+            * @returns none
+            * */
+            setChecked(chkIds, isCheck){
+                if(typeof(chkIds) == 'string' || typeof(chkIds) == 'number'){
+                    chkIds = [chkIds];
+                }
+
+                if(isCheck == null || isCheck == true) {
+                    this.checkGroup = this.checkGroup.concat(chkIds)
+                }else {
+                    for(let k in chkIds){
+                        let id = chkIds[k];
+                        let index = this.checkGroup.findIndex(item => { return item == id; });
+                        if(index >= 0){
+                            this.checkGroup.splice(index, 1);
+                        }
+                    }
+                }
+                this.$emit('on-selection-change', this.checkGroup);
             }
         },
     }
