@@ -3,6 +3,7 @@ import Component from './yt-component/yt-component.vue'
 import ytTreeGrid from './treegrid/treegrid.vue'
 import ytPdf from './pdf/pdf.vue'
 import ytList from './listTemp/list.vue'
+import ytMap from './map/ytMap.vue'
 /*指令*/
 import echarts from './directives/echarts'
 
@@ -13,7 +14,8 @@ var comps = {
     'yt-component': Component,
     'yt-tree-grid': ytTreeGrid,
     'yt-pdf': ytPdf,
-    'yt-list': ytList
+    'yt-list': ytList,
+    'yt-map': ytMap
 };
 
 export default {

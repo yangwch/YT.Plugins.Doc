@@ -1,6 +1,7 @@
 一般使用的方式
 
     <yt-tree-grid
+        :expanded="true"
         :items='[
             {
                 "id": 101,"displayName": "综合集成与管控系统", "url": "", "icon": "el-icon-date",

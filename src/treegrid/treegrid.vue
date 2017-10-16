@@ -134,6 +134,10 @@
              *  数据列表
              */
             items: Array,
+            /**
+             * 是否默认展开
+             * */
+            expanded: Boolean
         },
         data() {
             return {
@@ -260,13 +264,13 @@
                     });
                     if ((typeof item.expanded) == "undefined") {
                         item = Object.assign({}, item, {
-                            "expanded": false
+                            "expanded": this.expanded
                         });
                     }
                     /*是否显示*/
                     if ((typeof item.isShow) == "undefined" || (parent && parent.expanded == false)) {
                         item = Object.assign({}, item, {
-                            "isShow": false
+                            "isShow": this.expanded
                         });
                     }else if(parent.expanded){
                         item = Object.assign({}, item, {
@@ -487,6 +491,17 @@
                     }
                 }
                 this.$emit('on-selection-change', this.checkGroup);
+            },
+            /**
+             * 清除选择项
+             *
+             * @public
+             * @version 1.0.0
+             * @returns none
+             * */
+            clearSelection(){
+                this.checkGroup = [];
+                this.checks = false;
             }
         },
     }

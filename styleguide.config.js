@@ -33,6 +33,11 @@ module.exports = {
           components: 'src/pdf/pdf.vue'
       },
       {
+          name: 'yt-map 地图插件',
+          content: 'docs/map/Introduction.md',
+          components: 'src/map/ytMap.vue'
+      },
+      {
           name: 'echarts 指令示例',
           content: 'docs/echarts/Introduction.md',
           components: 'src/echarts/echarts.vue'

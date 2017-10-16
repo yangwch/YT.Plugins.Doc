@@ -19,6 +19,7 @@
     "dist/"
   ],
   "dependencies": {
+    "jquery": "^3.2.1",
     "vue": "^2.4.1",
     "echarts": "^3.7.1",
     "element-ui": "^1.4.4"
