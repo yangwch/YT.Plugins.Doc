@@ -4,6 +4,7 @@ import ytTreeGrid from './treegrid/treegrid.vue'
 import ytPdf from './pdf/pdf.vue'
 import ytList from './listTemp/list.vue'
 import ytMap from './map/ytMap.vue'
+import ytCombotree from './combotree/index.vue'
 /*指令*/
 import echarts from './directives/echarts'
 
@@ -15,12 +16,12 @@ var comps = {
     'yt-tree-grid': ytTreeGrid,
     'yt-pdf': ytPdf,
     'yt-list': ytList,
-    'yt-map': ytMap
+    'yt-map': ytMap,
+    'yt-combotree': ytCombotree
 };
 
 export default {
   install: function (Vue){
-        debugger
       Vue.directive('echarts', echarts);
 
       for(var key in comps){

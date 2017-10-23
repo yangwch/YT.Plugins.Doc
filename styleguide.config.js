@@ -3,6 +3,11 @@ const loaders = require('vue-webpack-loaders');
 module.exports = {
   sections: [
       {
+          name: 'yt-combotree 下拉树',
+          content: 'docs/combotree/Introduction.md',
+          components: 'src/combotree/index.vue'
+      },
+      {
           /* The component itself */
           name: 'yt-tree-grid 树形表格',
           content: 'docs/treegrid/Introduction.md',
@@ -41,15 +46,15 @@ module.exports = {
           name: 'echarts 指令示例',
           content: 'docs/echarts/Introduction.md',
           components: 'src/echarts/echarts.vue'
-      }
-      /*{
-        /!* The component itself *!/
+      },
+      {
+        /* The component itself */
         name: 'yt-component 示例',
         content: 'docs/yt-component/Introduction.md',
-        components: 'src/!**!/yt-component.vue',
+        components: 'src/**/yt-component.vue',
         // ignore: ['src/ignored-component/ignored-component.vue'],
         sections: [
-          /!* One item for every different demo or doc of the component *!/
+          /* One item for every different demo or doc of the component */
           {
             name: 'Use Case 1',
             content: 'docs/yt-component/UseCase1.md'
@@ -59,7 +64,7 @@ module.exports = {
             content: 'docs/yt-component/UseCase2.md'
           }
         ]
-      }*/
+      }
   ],
   webpackConfig: {
     module: {
