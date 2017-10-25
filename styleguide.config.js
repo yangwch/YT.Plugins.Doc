@@ -3,6 +3,11 @@ const loaders = require('vue-webpack-loaders');
 module.exports = {
   sections: [
       {
+          name: 'yt-dialog 可拖动对话框',
+          content: 'docs/dialog/Introduction.md',
+          components: 'src/dialog/dialog.vue'
+      },
+      {
           name: 'yt-combotree 下拉树',
           content: 'docs/combotree/Introduction.md',
           components: 'src/combotree/index.vue'

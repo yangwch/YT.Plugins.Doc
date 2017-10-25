@@ -5,6 +5,7 @@ import ytPdf from './pdf/pdf.vue'
 import ytList from './listTemp/list.vue'
 import ytMap from './map/ytMap.vue'
 import ytCombotree from './combotree/index.vue'
+import ytDialog from './dialog/dialog.vue'
 /*指令*/
 import echarts from './directives/echarts'
 
@@ -17,7 +18,8 @@ var comps = {
     'yt-pdf': ytPdf,
     'yt-list': ytList,
     'yt-map': ytMap,
-    'yt-combotree': ytCombotree
+    'yt-combotree': ytCombotree,
+    'yt-dialog': ytDialog
 };
 
 export default {
