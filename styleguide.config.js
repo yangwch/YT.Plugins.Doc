@@ -1,85 +1,77 @@
 const loaders = require('vue-webpack-loaders');
+const path = require('path');
+const { theme, styles } = require('./src/styleguidist/style')
+
 //console.log(JSON.stringify(loaders))
 module.exports = {
-  sections: [
-      {
-          name: 'yt-dialog 可拖动对话框',
+    title: 'YT.WEB.DOC',
+    highlightTheme: 'material',
+    sections: [
+        {
+          name: '可拖动对话框',
           content: 'docs/dialog/Introduction.md',
           components: 'src/dialog/dialog.vue'
-      },
-      {
-          name: 'yt-combotree 下拉树',
+        },
+        {
+          name: '下拉树',
           content: 'docs/combotree/Introduction.md',
           components: 'src/combotree/index.vue'
-      },
-      {
+        },
+        {
           /* The component itself */
-          name: 'yt-tree-grid 树形表格',
+          name: '树形表格',
           content: 'docs/treegrid/Introduction.md',
           components: 'src/treegrid/treegrid.vue',
           // ignore: ['src/ignored-component/ignored-component.vue'],
           sections: [
               /* One item for every different demo or doc of the component */
               {
-                  name: '示例1',
+                  name: '多选树形表格',
                   content: 'docs/treegrid/UseCase1.md'
               }
           ]
-      },
-      {
-          name: 'yt-list 列表页模板',
+        },
+        {
+          name: '列表页模板',
           content: 'docs/list/Introduction.md',
           components: 'src/listTemp/list.vue'
-      },
-      {
-          name: 'yt-table 表格',
+        },
+        {
+          name: '表格',
           content: 'docs/table/Introduction.md',
           components: 'src/table/table.vue',
           sections: [ ]
-      },
-      {
-          name: 'yt-pdf pdf显示插件',
+        },
+        {
+          name: 'pdf显示插件',
           content: 'docs/pdf/Introduction.md',
           components: 'src/pdf/pdf.vue'
-      },
-      {
-          name: 'yt-map 地图插件',
+        },
+        {
+          name: '地图插件',
           content: 'docs/map/Introduction.md',
           components: 'src/map/ytMap.vue'
-      },
-      {
-          name: 'echarts 指令示例',
+        },
+        {
+          name: 'echarts指令',
           content: 'docs/echarts/Introduction.md',
           components: 'src/echarts/echarts.vue'
-      },
-      {
-        /* The component itself */
-        name: 'yt-component 示例',
-        content: 'docs/yt-component/Introduction.md',
-        components: 'src/**/yt-component.vue',
-        // ignore: ['src/ignored-component/ignored-component.vue'],
-        sections: [
-          /* One item for every different demo or doc of the component */
-          {
-            name: 'Use Case 1',
-            content: 'docs/yt-component/UseCase1.md'
-          },
-          {
-            name: 'Use Case 2',
-            content: 'docs/yt-component/UseCase2.md'
-          }
-        ]
-      }
-  ],
-  webpackConfig: {
+        }
+    ],
+    styleguideComponents: {
+        Logo: path.join(__dirname, 'src/styleguidist/components/logo.js'),
+    },
+    webpackConfig: {
     module: {
-			loaders
-		}
-  },
+            loaders
+        }
+    },
     serverPort: 6062,
     showUsage: true,
     showCode: false,
-    theme: {
+    theme,
+    styles
+    /*theme: {
         color: {
             link: 'firebrick',
             linkHover: 'salmon',
@@ -97,5 +89,5 @@ module.exports = {
                 to: { opacity: 0.2 }
             }
         }
-    }
+    }*/
 };
