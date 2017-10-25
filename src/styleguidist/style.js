@@ -12,6 +12,9 @@ module.exports.theme = {
         small: '@media (max-width: 720px)',
     },
     sidebarWidth: '15rem',
+    fontFamily: {
+        base: '"monospace", "Comic Sans MS", "Comic Sans", cursive'
+    }
 }
 
 module.exports.styles = {
