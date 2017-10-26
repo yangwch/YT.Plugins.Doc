@@ -116,7 +116,6 @@
 				this.handleClose();
 			},
 			handleClose() {
-                debugger
 				if(typeof this.beforeClose === 'function') {
 					this.beforeClose(this.hide);
 				} else {
