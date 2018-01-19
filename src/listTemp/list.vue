@@ -47,12 +47,11 @@
 }
 </style>
 <script>
-    import * as ElementUI from 'element-ui/lib/index'
-	console.log(ElementUI)
+	import * as ElementUI from 'element-ui/lib/index'
 	export default {
-	    name: 'yt-list',
-	    components:{
-	        ElForm: ElementUI.Form,
+		name: 'yt-list',
+		components: {
+			ElForm: ElementUI.Form,
 			ElCard: ElementUI.Card,
 			ElRow: ElementUI.Row,
 			ElCol: ElementUI.Col
@@ -133,6 +132,14 @@
 
 		},
 		methods: {
+			/**
+			 * @public
+			 * 获取当前行
+			 * @returns {Object} 当前行
+			 */
+			getCurrentRow () {
+				return this.$refs.tablePl.getCurrentRow()
+			},
 			/**
 			 * 获取选中
 			 *

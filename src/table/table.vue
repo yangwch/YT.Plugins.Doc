@@ -92,7 +92,6 @@
 				count: 0,
 				currentPage: 1,
 				emptyText: '暂无数据',
-
 				selection: null
 			}
 		},
@@ -120,28 +119,36 @@
 			},
 			/*行选中事件*/
 			onCurrentChange(selection){
-				this.selection = selection;
+				this.currentRow = selection
 			},
 			/*当选择项变化时触发*/
 			onSelectionChange(selection){
 				this.selection = selection;
 			},
 			/**
-             *  获取选中
-             * @public
-             * @param none
-             * @returns {Object} 返回选中数据
-             * */
+			 * @public
+			 * 获取选中行
+			 * @returns {Object} 当前行
+			 */
+			getCurrentRow () {
+				return this.currentRow
+			},
+			/**
+			 *  获取选中
+			 * @public
+			 * @param none
+			 * @returns {Object} 返回选中数据
+			 * */
 			getSelection(){
 				return this.selection;
 			},
 			/**
-             *  返回当前表格装载数据
-             *
-             *  @public
-             *  @param none
-             *  @returns {Array} tableData
-             *  */
+			 *  返回当前表格装载数据
+			 *
+			 *  @public
+			 *  @param none
+			 *  @returns {Array} tableData
+			 *  */
 			getTableData(){
 				return this.tableData;
 			},
