@@ -6,7 +6,19 @@
 * textarea  长文本
 * number    数字
 * date/datetime 日期，若不定义format，默认：YYYY-MM-DD HH:mm:ss)；也可定义formatter(row, column, value)
-* radio     单选，使用options数组定义选项，例：['男', '女', {text: '保密', value: '' }]
+* radio     单选，使用options数组定义选项，例：
+```c
+options.columns: [
+  { title: '性别', field: 'sex', type: 'radio', options: ['男', '女', {text: '保密', value: '' }] }
+]
+
+```
+或
+```c
+options.columns: [
+  { title: '性别', field: 'sex', type: 'radio', options: (column) => { reuturn ['男', '女', {text: '保密', value: '' }]} }
+]
+```
 * select    下拉框，multiple若为true，则支持多选，options同上
 
 
@@ -54,7 +66,7 @@ new Vue({
         columns: [
           {title: '名称', field: 'name', width: 150},
           {title: '下载数', field: 'downloadNumber', type: 'number'},
-          {title: '是否PC', field: 'isPC', type: 'radio', options: ['是', '否', {text: '跨平台', value: '当然'}]},
+          {title: '是否PC', field: 'isPC', type: 'radio', options: (column) => { reuturn ['是', '否', {text: '跨平台', value: '当然'}]}},
           {title: '发布日期', field: 'publicDate', type: 'date', format: 'YYYY-MM-DD'},
           {title: '标签', field: 'labels', type: 'select', options: ['游戏', '赛车游戏', '益智游戏', '策略游戏'], multiple: true, formItemCols: 24, slot: 'colLabels'},
           {title: '创建时间', field: 'createdAt', type: 'date', width: 150, edit: false, formatter(row, column, value) {return value.toLocaleDateString()}},

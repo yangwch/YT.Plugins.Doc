@@ -107,7 +107,7 @@
               <template v-else-if="item.type === 'select'">
                 <el-select v-model="form[item.field]" :multiple="item.multiple || false">
                   <el-option
-                    v-for="(oitem, index) in item.options"
+                    v-for="(oitem, index) in getOptions(item.options, item)"
                     :key="index"
                     :label="oitem.text || oitem"
                     :value="oitem.value || oitem">
@@ -211,6 +211,8 @@ form.mmbs-form .el-input-number input {
        *  validRules {Object} Form验证规则，参见ElementUI -> Form验证 -> rules
        * 
        *  formLabelWidth {String} Form标签宽度
+       * 
+       *  formItemCols {Number} Form表单栅格宽度
        */
       options: {
         type: Object,
@@ -255,6 +257,17 @@ form.mmbs-form .el-input-number input {
       }
     },
     methods: {
+      /**
+       * 获取多选，单选的选项
+       */
+      getOptions (itemOptions, column) {
+        if (typeof itemOptions === 'object') {
+          return itemOptions
+        } else if (typeof itemOptions === 'function') {
+          let data = itemOptions(column)
+          return data
+        }
+      },
       /**
        * 判断是否有按钮权限
        */
