@@ -3,7 +3,7 @@ import Mmbs from './../lib/mmbs'
 // appId: 应用名
 let appId = 'YTAPP'
 // mmbsURL: mmbs服务地址
-let mmbsURL = 'http://localhost:3080/mmbs'
+let mmbsURL = 'http://192.168.0.207:3080/mmbs'
 
 // defPageSize: 默认分页数
 let defPageSize = 10

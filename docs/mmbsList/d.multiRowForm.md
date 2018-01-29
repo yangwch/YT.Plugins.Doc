@@ -11,9 +11,6 @@
 new Vue({
   template: `
     <mmbs-list :options="options">
-      <template slot="buttons">
-        <a href="###">button</a>
-      </template>
     </mmbs-list>
   `,
   data () {

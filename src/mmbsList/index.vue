@@ -138,6 +138,7 @@ form.mmbs-form .el-input-number input {
   import 'element-ui/lib/theme-chalk/index.css'
   import { commonApi } from '../api/index'
   import filterPlugin from './filter.vue'
+  import { MessageBox } from 'element-ui'
   import {
     Button,
     ButtonGroup,
@@ -342,7 +343,7 @@ form.mmbs-form .el-input-number input {
       onDel () {
         let row = this.$refs.list.getCurrentRow()
         if (row) {
-          this.$confirm(`此操作将永久删除，是否继续？`, '提示').then(() => {
+          MessageBox.confirm(`此操作将永久删除，是否继续？`, '提示').then(() => {
             let deleteApi = (this.options.deleteApi && this.options.deleteApi({id: row.id})) || commonApi.delete(this.options.collectionName, row.id)
             deleteApi.then((result) => {
               this.onSearch()
