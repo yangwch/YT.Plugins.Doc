@@ -167,7 +167,7 @@
 			 * @param {event} 事件
 			 * @returns none
 			 * */
-			onSearch(params){
+			onSearch (params) {
 				var tmpParams = this.searchParams
         if (params) {
           tmpParams = Object.assign({}, this.params, params)
