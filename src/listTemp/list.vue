@@ -167,9 +167,14 @@
 			 * @param {event} 事件
 			 * @returns none
 			 * */
-			onSearch(event){
-				event && event.stopPropagation()
-				return this.$refs.tablePl.search(this.searchParams)
+			onSearch(params){
+				var tmpParams = this.searchParams
+        if (params) {
+          tmpParams = Object.assign({}, this.params, params)
+        } else {
+          tmpParams = Object.assign({}, this.params, tmpParams)
+        }
+				return this.$refs.tablePl.search(tmpParams)
 			},
 			/**
 			 * 刷新

@@ -8,6 +8,7 @@ import ytCombotree from './combotree/index.vue'
 import ytDialog from './dialog/dialog.vue'
 /*指令*/
 import echarts from './directives/echarts'
+import dtime from 'time-formater'
 
 /*
 import 'element-ui/lib/theme-default/index.css'
@@ -28,6 +29,13 @@ export default {
 
       for(var key in comps){
           Vue.component(key, comps[key]);
+      }
+
+      Vue.prototype.$fmtDateTime = (date, format) => {
+        if (date) {
+          return dtime(date).format(format || 'YYYY-MM-DD HH:mm:ss')
+        }
+        return null;
       }
   },
     version: process.env.VERSION

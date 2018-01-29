@@ -152,44 +152,49 @@
 			getTableData(){
 				return this.tableData;
 			},
-			/*获取数据*/
-			async getApiData(){
-				var params = this.params;
-				params.skipCount = (this.currentPage - 1) * this.limit ,
-				params.maxResultCount = this.limit
-				this.emptyText = '加载中。。。',
-				this.tableData = [],
-				this.reload = false
-				const result = await this.searchApi(params);
-				this.tableData = (result && result.result && (result.result.rows || result.result.items)) || [];
-				this.count = (result && result.result && (result.result.total || result.result.totalCount)) || 0;
-				this.emptyText = '暂无数据'
-				this.reload = true;
-			},
-			/**
-             * 查询
-             *
-             * @public
-             * @param {Object} 参数
-             * @returns none
-             * */
-			search(params){
-				/*参数*/
-				for(var i in params){
-					this.params[i] = params[i];
-				}
-				this.getApiData();
-			},
-			/**
-             * 取消选中
-             *
-             * @public
-             * @param none
-             * @returns none
-             * */
-			clearSelection(){
-				this.$refs.table.clearSelection();
-			}
+			/*  获取数据 */ 
+      async getApiData(paramsData) {
+        var params = {} // this.params
+        params.page = this.currentPage
+        params.rows = this.limit
+        params.params = paramsData || Object.assign({}, this.params, this.tmpParams)
+        params._order = this.orderOption
+        this.emptyText = '加载中。。。'
+        this.tableData = [],
+        this.reload = false
+        const result = await this.searchApi(params)
+        this.tableData = (result && result.result && result.result.rows) || []
+        this.count = (result && result.result && result.result.total) || 0
+        this.emptyText = '暂无数据'
+        this.reload = true
+      },
+      /**
+       * @public
+       * 查询
+			 * @param {Object} - 查询参数
+       * @returns none
+       */ 
+      search (params) {
+        this.tmpParams = params || {}
+        let paramsData = Object.assign({}, this.params, params)
+        this.getApiData(paramsData);
+      },
+      /**
+       * @public
+       * 
+       * 取消选中
+       * @returns none
+       */ 
+      clearSelection () {
+        this.$refs.table.clearSelection()
+      },
+      /* 排序变化 */
+      onSortChange (option) {
+        let prop = (option.prop && option.prop.split('.')[option.prop.split('.').length - 1]) || ''
+        let orderOption = (prop && (option.order === 'ascending' ? prop : '-' + prop)) || ''
+        this.orderOption = orderOption
+        this.getApiData()
+      }
 		},
 	}
 </script>

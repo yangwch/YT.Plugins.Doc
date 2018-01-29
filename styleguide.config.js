@@ -9,8 +9,31 @@ module.exports = {
   sections: [
     {
       name: 'mmbs',
-      content: 'docs/mmbs/Introduction.md',
-      components: 'src/mmbsList/index.vue'
+      content: 'docs/mmbsList/a.Introduction.md',
+      sections: [
+        {
+          name: 'mmbs列表页',
+          components: 'src/mmbsList/index.vue',
+          sections: [
+            {
+              // name: '一般功能',
+              content: 'docs/mmbsList/c.simple.md'
+            },
+            {
+              // name: '多行编辑表单',
+              content: 'docs/mmbsList/d.multiRowForm.md'
+            },
+            {
+              // name: '表单类型示例',
+              content: 'docs/mmbsList/e.form.md'
+            },
+            {
+              // 查询
+              content: 'docs/mmbsList/f.query.md'
+            }
+          ]
+        }
+      ]
     },
     {
       name: '可拖动对话框',
