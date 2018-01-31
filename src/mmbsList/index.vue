@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mmbs-list">
     <yt-list :title="options.title" :params="options.query || {}" :search-api="searchApi" ref="list">
       <!--操作按鈕-->
       <template slot="buttons">
@@ -42,8 +42,23 @@
          >
         </el-table-column>
         <template v-for="(item, index) in (options.columns || [])">
+          <!-- 上传文件列 -->
           <el-table-column
-            v-if="!item.slot && !item.hideCol"
+            v-if="!item.slot && !item.hideCol && item.type === 'file' && !item.formatter"
+            :key="index"
+            :property="item.field == 'id' ? 'id' : 'attributes.' + item.field"
+            :width="item.width"
+            :label="item.title"
+            :align="item.align">
+            <template slot-scope="scope">
+              <div v-for="(item, index) in scope.row.attributes[item.field]" :key="index">
+                <a :href="item.url" target="_blank" v-text="item.name" class="link-file"></a>
+              </div>
+            </template>
+          </el-table-column>
+          <!-- 非上传文件列 -->
+          <el-table-column
+            v-else-if="!item.slot && !item.hideCol"
             :key="index"
             :property="item.field == 'id' ? 'id' : 'attributes.' + item.field"
             :width="item.width"
@@ -114,6 +129,10 @@
                   </el-option>
                 </el-select>
               </template>
+              <!-- 上传文件 -->
+              <template v-else-if="item.type === 'file'">
+                <mmbs-file v-model="form[item.field]" :multiple="item.multiple !== false" :max="item.max || 99" :file-types="item.fileTypes" :list-type="item.listType || 'text'"/>
+              </template>
             </el-form-item>
           </el-col>
         </template>
@@ -125,20 +144,25 @@
       </div>
     </yt-dialog>
   </div>
-  
 </template>
 <style>
-form.mmbs-form .el-input-number input {
-  text-align: left;
-}
+  /* 数字输入框左对齐 */
+  form.mmbs-form .el-input-number input {
+    text-align: left;
+  }
+  .mmbs-list a.link-file {
+    color: #66b1ff;
+    text-decoration: none;
+  }
 </style>
 
 <script>
   import dtime from 'time-formater'
   import 'element-ui/lib/theme-chalk/index.css'
   import { commonApi } from '../api/index'
-  import filterPlugin from './filter.vue'
   import { MessageBox } from 'element-ui'
+  import filterPlugin from './filter.vue'
+  import mmbsFile from './../mmbsFile/index.vue'
   import {
     Button,
     ButtonGroup,
@@ -159,6 +183,7 @@ form.mmbs-form .el-input-number input {
     name: 'mmbsList',
     components: {
       filterPlugin,
+      mmbsFile,
       ElButton: Button,
       ElButtonGroup: ButtonGroup,
       ElForm: Form,
@@ -212,7 +237,7 @@ form.mmbs-form .el-input-number input {
        * 
        *  formLabelWidth {String} Form标签宽度
        * 
-       *  formItemCols {Number} Form表单栅格宽度
+       *  formItemCols {Number} Form表单栅格宽度，默认24
        */
       options: {
         type: Object,
@@ -330,7 +355,7 @@ form.mmbs-form .el-input-number input {
             this.$set(this.form, column.field, Date(row.attributes[column.field]))
           } else {
             let defVal = row.attributes[column.field]
-            if (column.type === 'select' && column.multiple) {
+            if ((column.type === 'select' && column.multiple) || column.type === 'file') {
               defVal = defVal || []
             }
             this.$set(this.form, column.field, defVal)

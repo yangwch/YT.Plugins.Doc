@@ -1,4 +1,4 @@
-## mmbsList简单示例
+### mmbsList简单示例
 
 示例，createdAt 和 updatedAt，会自动生成，可以直接使用
 ```
@@ -21,6 +21,7 @@ new Vue({
         columns: [
           {title: '名称', field: 'name', width: 150},
           {title: '创建时间', field: 'createdAt', type: 'date', width: 150, edit: false, formatter(row, column, value) {return value.toLocaleDateString()}},
+          {title: '更新时间', field: 'updatedAt', type: 'date', width: 150, edit: false, formatter(row, column, value) {return value.toLocaleDateString()}},
           {title: '说明', field: 'remark', type: 'textarea'}
         ],
         query: { },

@@ -176,6 +176,14 @@ export default {
     })
   },
   /**
+   * 上传文件
+   * @param {Object} file - 文件
+   */
+  uploadFile (file) {
+    var mfile = new Mmbs.File(file.name, file)
+    return mfile.save()
+  },
+  /**
    * 统计数据
    * @param collectionName {String} - 集合名称
    * @param options {String} - 选项

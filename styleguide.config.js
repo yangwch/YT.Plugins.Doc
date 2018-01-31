@@ -32,8 +32,12 @@ module.exports = {
               content: 'docs/mmbsList/f.query.md'
             }
           ]
+        },
+        {
+          name: 'mmbs文件上传',
+          components: 'src/mmbsFile/index.vue'
         }
-      ]
+      ],
     },
     {
       name: '可拖动对话框',
@@ -54,7 +58,7 @@ module.exports = {
       sections: [
         /* One item for every different demo or doc of the component */
         {
-          name: '多选树形表格',
+          // name: '多选树形表格',
           content: 'docs/treegrid/UseCase1.md'
         }
       ]

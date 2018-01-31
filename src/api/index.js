@@ -5,5 +5,6 @@ export const commonApi = {
   get: (collectionName, data) => mmbs.query(collectionName, data),
   save: (collectionName, data) => mmbs.save(collectionName, data),
   update: (collectionName, data) => mmbs.update(collectionName, data.id, data.data),
-  delete: (collectionName, data) => mmbs.delete(collectionName, data)
+  delete: (collectionName, data) => mmbs.delete(collectionName, data),
+  upload: file => mmbs.uploadFile(file)
 }

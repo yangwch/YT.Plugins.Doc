@@ -13,7 +13,7 @@ module.exports.theme = {
     },
     sidebarWidth: '15rem',
     fontFamily: {
-        base: '"monospace", "Comic Sans MS", "Comic Sans", cursive'
+        base: '"Helvetica Neue",Helvetica,Arial,sans-serif'
     }
 }
 
@@ -47,7 +47,7 @@ module.exports.styles = {
     },
     ComponentsList: {
         list: {
-            fontSize: '.8em',
+            fontSize: '1em',
         },
         item: {
             '& a': {
