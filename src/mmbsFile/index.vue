@@ -1,7 +1,7 @@
 <template>
   <div class="mmbs-files">
     <!-- 选择文件控件 -->
-    <input name="file" class="el-upload__input" ref="input" type="file" @change="onChooseFile()">
+    <input name="file" class="el-upload__input" ref="input" type="file" :multiple="multiple" @change="onChooseFile()">
     <!-- 上传按钮 - 文本类型 - start -->
     <div class="el-upload el-upload--picture" v-if="listType == 'text'">
       <button class="el-button el-button--primary el-button--mini" type="button" @click="$refs.input.click()">
@@ -100,7 +100,7 @@ export default {
       }
     },
     /**
-     * 文件列表展示类型
+     * 文件列表展示类型，可选：text（默认）/picture
      */
     listType: {
       type: String,
@@ -135,6 +135,10 @@ export default {
       let files = this.$refs.input.files
       let self = this
       if (files.length) {
+        if (files.length + this.fileList.length > this.max) {
+          Message({ message: '超出文件数量限制', type: 'error' })
+          return
+        }
         for (let i = 0; i < files.length; i++) {
           let file = files[i]
           self.upload(file)
@@ -147,11 +151,11 @@ export default {
     validFileType (file) {
       // 检查是否超过限制数量
       if (!this.multiple && this.fileList.length > 0) {
-        Message({ message: '不允许选择多个文件' })
+        Message({ message: '不允许选择多个文件', type: 'error' })
         return false
       }
       if (this.multiple && this.fileList && this.fileList.length >= this.max) {
-        Message({ message: '超出文件数量限制' })
+        Message({ message: '超出文件数量限制', type: 'error' })
         return false
       }
       let fileTypes = [].concat(this.fileTypes)
