@@ -11,17 +11,17 @@ let defPageSize = 10
 Mmbs.initialize(appId)
 Mmbs.serverURL = mmbsURL
 
-export default {
+const util = {
   /**
    * 保存
    * @param collectionName {String} - 集合名称
    * @param obj {Object} - 保存的对象
    */
   save (collectionName, obj) {
-    var Score = Mmbs.Object.extend(collectionName)
-    var scoreObj = new Score()
+    var ClassObj = Mmbs.Object.extend(collectionName)
+    var classObj = new ClassObj()
     return new Promise((resolve, reject) => {
-      scoreObj.save(obj, {
+      classObj.save(obj, {
         success (model) {
           resolve(model)
         },
@@ -40,20 +40,12 @@ export default {
    * @param data {Object} - 对象
   */
   update (collectionName, objectId, data) {
-    var score = Mmbs.Object.extend(collectionName)
-    var query = new Mmbs.Query(score)
+    var ClassObj = Mmbs.Object.extend(collectionName)
+    var obj = ClassObj.createWithoutData(objectId);
     return new Promise((resolve, reject) => {
-      query.get(objectId, {
-        success (score) {
-          // 保存
-          score.save(data, {
-            success (result) {
-              resolve(result)
-            },
-            error (error) {
-              reject(error)
-            }
-          })
+      obj.save(data, {
+        success (result) {
+          resolve(result)
         },
         error (error) {
           reject(error)
@@ -67,19 +59,12 @@ export default {
    * @param objectId {String} - 对象id
    */
   delete (collectionName, objectId) {
-    var score = Mmbs.Object.extend(collectionName)
-    var query = new Mmbs.Query(score)
+    var ClassObj = Mmbs.Object.extend(collectionName)
+    var obj = ClassObj.createWithoutData(objectId);
     return new Promise((resolve, reject) => {
-      query.get(objectId, {
-        success (score) {
-          score.destroy({
-            success (result) {
-              resolve(result)
-            },
-            error (error) {
-              reject(error)
-            }
-          })
+      obj.destroy({
+        success (result) {
+          resolve(result)
         },
         error (error) {
           reject(error)
@@ -88,25 +73,15 @@ export default {
     })
   },
   /**
-   * 查询，分页，条件
-   * @param collectionName {String} - 集合名称
-   * @param options {Object} - 选项
-   * @param options.params {Object} - 参数，示例：{playerName: 'Stan', minScore: {value: 60, field: 'score', type: 'greaterThan'}} 
+   * 将参数扩展到query对象上
+   * @param {Object} query query对象
+   * @param {Object} params 参数对象
    */
-  query (collectionName, options = {page: 1, rows: defPageSize, params: {}, _order: '-createdAt'}) {
-    var score = Mmbs.Object.extend(collectionName)
-    var query = new Mmbs.Query(score)
-    /* 排序 */
-    let order = options._order || '-createdAt'
-    if (order.indexOf('-') === 0) {
-      query.descending(order.replace('-', ''))
-    } else {
-      query.ascending(order)
-    }
-    let paramNames = Object.getOwnPropertyNames(options.params || {})
+  extendQueryParams (query, params = {}) {
+    let paramNames = Object.getOwnPropertyNames(params || {})
     if (paramNames.length) {
       paramNames.map(item => {
-        let val = options.params[item]
+        let val = params[item]
         if (val && typeof val === 'string') {
           query.contains(item, val) // matches(item, new RegExp(val))
         } else if (val && typeof val === 'object') {
@@ -114,6 +89,25 @@ export default {
         }
       })
     }
+  },
+  /**
+   * 查询，分页，条件
+   * @param collectionName {String} - 集合名称
+   * @param options {Object} - 选项
+   * @param options.params {Object} - 参数，示例：{playerName: 'Stan', minClassObj: {value: 60, field: 'obj', type: 'greaterThan'}} 
+   */
+  query (collectionName, options = {page: 1, rows: defPageSize, params: {}, _order: '-createdAt'}) {
+    var ClassObj = Mmbs.Object.extend(collectionName)
+    var query = new Mmbs.Query(ClassObj)
+    /* 排序 */
+    let order = options._order || '-createdAt'
+    if (order.indexOf('-') === 0) {
+      query.descending(order.replace('-', ''))
+    } else {
+      query.ascending(order)
+    }
+    // 添加查询条件到query
+    util.extendQueryParams(query, options.params)
     let page = options.page || 1,
       limit = options.rows || defPageSize,
       skip = (page - 1) * limit
@@ -143,12 +137,24 @@ export default {
     })
   },
   /**
+   * 数据订阅
+   * @param {String} collectionName 集合名称
+   * @param {Object} params 参数
+   */
+  liveQuery (collectionName, params) {
+    var ClassObj = Mmbs.Object.extend(collectionName)
+    var query = new Mmbs.Query(ClassObj)
+    util.extendQueryParams(query, params)
+    let subscription = query.subscribe()
+    return subscription
+  },
+  /**
    * 查找列表所有记录
    * @param collectionName {String} - 集合名称
    */
   find (collectionName) {
-    var score = Mmbs.Object.extend(collectionName)
-    var query = new Mmbs.Query(score)
+    var ClassObj = Mmbs.Object.extend(collectionName)
+    var query = new Mmbs.Query(ClassObj)
     return new Promise((resolve, reject) => {
       query.find({
         success (results) {
@@ -170,10 +176,34 @@ export default {
   login (data) {
     return new Promise((resolve, reject) => {
       Mmbs.User.logIn(data.username, data.password, {
+        success: function(user) {
+          resolve(user)
+        },
+        error: function(user, error) {
+          reject(error)
+        }
+      });
+    })
+  },
+  /**
+   * 运行云代码
+   * @param funcName {String} - 函数名称
+   * @param data {Object} - 函数参数
+   */
+ runCloud (funcName, data) {
+    return new Promise((resolve, reject) => {
+      Mmbs.Cloud.run(funcName, data, {
         success: resolve,
         error: reject
-      })
+      });
     })
+  },
+  
+  /**
+   * 登出
+   */
+  logout () {
+    return Mmbs.User.logOut()
   },
   /**
    * 上传文件
@@ -189,10 +219,8 @@ export default {
    * @param options {String} - 选项
    */
   agg (collectionName, options) {
-    var score = Mmbs.Object.extend(collectionName)
-    var query = new Mmbs.Query(score)
-    // return query.distinct('playerName', {useMasterKey: true})
-    Mmbs.CoreManager.set('MASTER_KEY', '123456')
+    var ClassObj = Mmbs.Object.extend(collectionName)
+    var query = new Mmbs.Query(ClassObj)
     return query.aggregate(options)
   },
   // Mmbs实例
@@ -200,3 +228,4 @@ export default {
     return Mmbs
   }
 }
+export default util

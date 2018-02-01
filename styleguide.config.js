@@ -36,6 +36,10 @@ module.exports = {
         {
           name: 'mmbs文件上传',
           components: 'src/mmbsFile/index.vue'
+        },
+        {
+          name: 'mmbs数据订阅',
+          content: 'docs/mmbsList/g.liveQuery.md'
         }
       ],
     },
