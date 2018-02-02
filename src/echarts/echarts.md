@@ -1,6 +1,9 @@
 echarts示例
 ```html
 new Vue({
+  template: `
+    <div v-echarts="echartsOption" style="height: 400px;width: 100%;"></div>
+  `,
   data(){
     return {
       /**
@@ -24,9 +27,6 @@ new Vue({
       }
     }
   },
-  template: `
-    <div v-echarts="echartsOption" style="height: 400px;width: 100%;"></div>
-  `,
 })
 
 ```

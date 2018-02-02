@@ -65,6 +65,7 @@ import {
   Option
 } from 'element-ui/lib/index'
 import echarts from './../directives/echarts'
+import dtime from 'time-formater'
 
 export default {
   components: {
@@ -101,11 +102,13 @@ export default {
     }
   },
   methods: {
-    onFieldChange (row) {
-      
-    },
-    onStaTypeChange () {
-
+    onFieldChange (row) { },
+    onStaTypeChange () { },
+    fmtDateTime (date, format) {
+      if (date) {
+        return dtime(date).format(format || 'YYYY-MM-DD HH:mm:ss')
+      }
+      return null;
     },
     // 获取数据并显示图表
     getChart () {
@@ -116,6 +119,9 @@ export default {
       if (fieldName && staType) {
         let pipeline
         let tjName = ''
+        let tjField = this.columns.find(column => {
+          return column.field === fieldName
+        })
         if (staType === 'count') {
           pipeline = {
             group: { objectId: '$' + fieldName, count: { $sum: 1 } }
@@ -135,7 +141,11 @@ export default {
           let seriesData = []
           if (results && results.length) {
             results.map(item => {
-              legendData.push(item.objectId)
+              let legend = item.objectId
+              if (tjField && (tjField.type === 'date' || tjField.type === 'datetime') && legend) {
+                legend = (tjField.format && this.fmtDateTime(new Date(legend), tjField.format)) || (new Date(legend).toLocaleString())
+              }
+              legendData.push(legend)
               seriesData.push(item[tjName])
             })
             
