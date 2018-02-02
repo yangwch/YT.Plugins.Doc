@@ -149,6 +149,18 @@ const util = {
     return subscription
   },
   /**
+   * 统计数据
+   * @param collectionName {String} - 集合名称
+   * @param options {String} - 选项
+   */
+  agg (collectionName, params, pipeline) {
+    console.log(pipeline)
+    var ClassObj = Mmbs.Object.extend(collectionName)
+    var query = new Mmbs.Query(ClassObj)
+    util.extendQueryParams(query, params)
+    return query.aggregate(pipeline)
+  },
+  /**
    * 查找列表所有记录
    * @param collectionName {String} - 集合名称
    */
@@ -212,16 +224,6 @@ const util = {
   uploadFile (file) {
     var mfile = new Mmbs.File(file.name, file)
     return mfile.save()
-  },
-  /**
-   * 统计数据
-   * @param collectionName {String} - 集合名称
-   * @param options {String} - 选项
-   */
-  agg (collectionName, options) {
-    var ClassObj = Mmbs.Object.extend(collectionName)
-    var query = new Mmbs.Query(ClassObj)
-    return query.aggregate(options)
   },
   // Mmbs实例
   getMmbs () {

@@ -9,5 +9,6 @@ export const commonApi = {
   /* 上传文件 */
   upload: file => mmbs.uploadFile(file),
   /* 数据订阅 */
-  liveQuery: (collectionName, params) => mmbs.liveQuery(collectionName, params)
+  liveQuery: (collectionName, params) => mmbs.liveQuery(collectionName, params),
+  agg: (collectionName, params, pipeline) => mmbs.agg(collectionName, params, pipeline)
 }

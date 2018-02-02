@@ -29,6 +29,12 @@
               <filter-plugin :columns="options.columns" @onFilter="onFilter"/>
             </el-popover>
             <el-button type="primary" icon="iconfont icon-filter" v-popover:filter>过滤</el-button>
+
+            <!-- 统计图表 -->
+            <el-popover placement="bottom-end" trigger="click" effect="light" ref="charts">
+              <chart-plugin :options="options"/>
+            </el-popover>
+            <el-button type="primary" icon="iconfont icon-wxbbaobiao" v-popover:charts></el-button>
           </el-form-item>
         </el-form>
         <template v-else>&nbsp;</template>
@@ -159,10 +165,12 @@
 <script>
   import dtime from 'time-formater'
   import 'element-ui/lib/theme-chalk/index.css'
+  import './../../static/css/iconFont/iconfont.css'
   import { commonApi } from '../api/index'
   import { MessageBox } from 'element-ui'
   import filterPlugin from './filter.vue'
   import mmbsFile from './../mmbsFile/index.vue'
+  import chartPlugin from './chart.vue'
   import {
     Button,
     ButtonGroup,
@@ -183,6 +191,7 @@
     name: 'mmbsList',
     components: {
       filterPlugin,
+      chartPlugin,
       mmbsFile,
       ElButton: Button,
       ElButtonGroup: ButtonGroup,
