@@ -8,6 +8,8 @@
 * enter  若订阅时有查询条件，筛选条件之外的数据更新后在当前条件之内，则触发
 * leave  若订阅时有查询条件，筛选条件之内的数据更新后在当前条件之外，则触发
 
+### 订阅示例
+
 ```js
   const commonApi = require('../../src/api/index.js').commonApi
   new Vue({
@@ -52,8 +54,9 @@
         if (this.subscrite) {
           this.subscrite.unsubscribe()
         }
+        this.getData()
         // 订阅 GameList 集合（集合名称，查询参数）
-        this.subscrite = commonApi.liveQuery('GameList', this.formInline)
+        this.subscrite = commonApi.liveQuery(this.collectionName, this.formInline)
         this.subscrite.on('create', object => {
           console.log('created', object)
           // 创建记录的时候添加这条数据
@@ -83,7 +86,7 @@
     }
   })
 ```
-### 订阅示例
+ 操作列表的数据，然后查看上面输出
 ```js
 new Vue({
   template: `<mmbs-list :options="options"/>`,

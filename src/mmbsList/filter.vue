@@ -56,6 +56,11 @@
     </tr>
   </table>
 </template>
+<style scoped>
+  .text-right {
+    text-align: right;
+  }
+</style>
 <script>
 import * as ElementUI from 'element-ui/lib/index'
 export default {
