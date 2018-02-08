@@ -10,6 +10,8 @@ let defPageSize = 10
 
 Mmbs.initialize(appId)
 Mmbs.serverURL = mmbsURL
+Mmbs.allowAnonymousKey = "myAllowAnonymousKey";
+Mmbs.useAllowAnonymousKey = true;
 
 const util = {
   /**

@@ -1,9 +1,9 @@
 import mmbs from './mmbs'
-if (!localStorage.length) {
-  mmbs.login({username: 'admin', password: 'yt123456'}).then(data => {
-    location.reload()
-  })
-}
+// if (!localStorage.length) {
+//   mmbs.login({username: 'admin', password: 'yt123456'}).then(data => {
+//     location.reload()
+//   })
+// }
 // 公共api,组件 增，删，改，查，上传文件，数据订阅
 export const commonApi = {
   findAll: (collectionName) => mmbs.find(collectionName),
