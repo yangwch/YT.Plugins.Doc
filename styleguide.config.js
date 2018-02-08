@@ -39,7 +39,11 @@ module.exports = {
         },
         {
           name: 'mmbs数据订阅',
-          content: 'docs/mmbsList/g.liveQuery.md'
+          sections: [
+            {
+              content: 'docs/mmbsList/g.liveQuery.md',
+            }
+          ]
         }
       ],
     },

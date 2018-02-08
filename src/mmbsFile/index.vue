@@ -16,6 +16,12 @@
         </a>
         <i class="el-icon-close" @click="onRemove(item, index)"></i>
       </li>
+      <!-- 上传中的文件 -->
+      <li class="el-upload-list__item" v-for="(item, index) in loadingFiles" :key="item.id">
+        <a class="el-upload-list__item-name">
+          <i class="el-icon-loading"></i>{{item.name}}
+        </a>
+      </li>
     </ul>
     <!-- 上传按钮 - 文本类型 - end -->
     <!-- 图片卡片列表 - start -->
@@ -57,6 +63,7 @@
 <script>
 import {commonApi} from '../api/index'
 import {Message, MessageBox, Dialog} from 'element-ui'
+import uuidv4 from 'uuid/v4'
 export default {
   name: 'mmbsFile',
   components: {
@@ -125,6 +132,8 @@ export default {
       previewTitle: null,
       previewVisible: false,
       previewUrl: null,
+      // 加载中的文件
+      loadingFiles: []
     }
   },
   methods: {
@@ -137,6 +146,7 @@ export default {
       if (files.length) {
         if (files.length + this.fileList.length > this.max) {
           Message({ message: '超出文件数量限制', type: 'error' })
+          this.$refs.input.value = ''
           return
         }
         for (let i = 0; i < files.length; i++) {
@@ -178,12 +188,25 @@ export default {
      * 上传
      */
     upload (file) {
+      let uuid = uuidv4()
+      // 移除加载中的项
+      let removeLoading = () => {
+        let index = this.loadingFiles.findIndex(item => {
+          return item.id === uuid
+        })
+        this.loadingFiles.splice(index, 1)
+        if (this.loadingFiles.length === 0) {
+          this.$refs.input.value = ''
+        }
+      }
       if (this.validFileType(file)) {
+        this.loadingFiles.push({ name: file.name, id: uuid })
         commonApi.upload(file).then(data => {
-          console.log(data)
+          removeLoading()
           this.fileList.push({name: file.name, url: data.url()})
           this.$emit('input', this.fileList)
         }).catch(ex => {
+          removeLoading()
           this.$message.error(ex)
         })
       }
