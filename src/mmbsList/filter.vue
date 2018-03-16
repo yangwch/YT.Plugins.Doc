@@ -110,6 +110,16 @@ export default {
           {text: '大于等于', value: 'greaterThanOrEqualTo'},
           {text: '等于', value: 'equalTo'},
           {text: '不等于', value: 'notEqualTo'}
+        ],
+        radio: [
+          {text: '等于', value: 'equalTo'},
+          {text: '不等于', value: 'notEqualTo'},
+          {text: '包含', value: 'contains'}
+        ],
+        select: [
+          {text: '等于', value: 'equalTo'},
+          {text: '不等于', value: 'notEqualTo'},
+          {text: '包含', value: 'contains'}
         ]
       }
     }

@@ -90,13 +90,13 @@ export default {
       columns: (this.options && this.options.columns) || [],
       collectionName: this.options.collectionName,
       // 分组字段
-      field: null,
+      field: this.options && this.options.chart && this.options.chart.field,
       // 统计类型
-      staType: null,
+      staType: this.options && this.options.chart && this.options.chart.staType,
       // 统计字段
-      staField: null,
+      staField: this.options && this.options.chart && this.options.chart.staField,
       // 图表类型
-      chartType: 'bar',
+      chartType: (this.options && this.options.chart && this.options.chart.chartType) || 'bar',
       showChart: false,
       chartOption: { }
     }

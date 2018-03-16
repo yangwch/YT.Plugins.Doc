@@ -132,9 +132,9 @@ options.validRules = {
     {min: 1, max: 20, message: '名称长度在1-20之间', trigger: 'change'}
   ],
   // 正则表达式验证
-  tel: {
+  tel: [
     {pattern: /^1\d{10}$/, message: '请输入电话号码', trigger: 'change'}
-  }
+  ]
 }
 ```
 ### 表单验证示例
