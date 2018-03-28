@@ -1,9 +1,9 @@
 import Mmbs from './../lib/mmbs'
 // import { mmbsURL, appId, defPageSize } from '@/config/env'
 // appId: 应用名
-let appId = 'YTAPP'
+let appId = 'myAppId'
 // mmbsURL: mmbs服务地址
-let mmbsURL = 'http://192.168.0.207:3080/mmbs'
+let mmbsURL = 'http://cloud.cmetamap.com:3080/mmbs'
 
 // defPageSize: 默认分页数
 let defPageSize = 10

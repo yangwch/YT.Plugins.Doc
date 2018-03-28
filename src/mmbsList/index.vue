@@ -272,6 +272,10 @@
        *  aclRead {String, Array} acl读取权限，默认：public，示例(当前用户&&指定角色)：['currentUser', {roles: ['administrator']}]
        *
        *  aclWrite {String, Array} acl写入权限（包括增加，修改，删除），默认：public （acl读写权限对默认api有效果）
+       *
+       *  sortField {String} 排序字段，默认createdAt
+       *
+       *  sortOrder {String} 排序方式，asc/desc
        */
       options: {
         type: Object,
@@ -297,7 +301,9 @@
             form: {},
             // acl权限配置
             aclRead: 'public',
-            aclWrite: 'public'
+            aclWrite: 'public',
+            sortField: 'createdAt',
+            sortOrder: 'desc'
           }
         }
       }
@@ -312,7 +318,15 @@
         searchField: this.options.searchField || 'keyword',
         searchLabel: this.options.searchField || '关键字',
         searchApi: (collectionName => {
-          return params => commonApi.get(collectionName, params)
+          // 排序处理
+          let order = this.options.sortField ? (this.options.sortOrder === 'desc' ? '-' : '') + this.options.sortField : null
+          return params => {
+            let data = params
+            if (order && !params._order) {
+              Object.assign(data, {_order: order})
+            }
+            return commonApi.get(collectionName, data);
+          }
         })(this.options.collectionName),
         // 当前操作 add/edit
         action: ''
