@@ -237,7 +237,7 @@
        *
        *  deleteApi {Function} 自定义删除Api
        *
-       *  columns {Array} 要显示的列
+       *  columns {Array} 要显示的列，属性：field, title, width, type, add, edit, formItemCols, multiple, formatter, hideCol, options(Object), fromSource(Boolean), dataSource(Object: (id, title, className))
        *
        *  search {Boolean} 是否带默认查询
        *
@@ -256,9 +256,11 @@
        *  formLabelWidth {String} Form标签宽度
        *
        *  formItemCols {Number} Form表单栅格宽度，默认24
+       * 
+       *  showChart {Object} 是否显示图表按钮，默认 false
        *
        *  chart {Object} 统计图表默认选项，示例：
-         {
+          {
             (// 分组字段)
             field: 'compony',
             (// 统计类型 count, sum, avg, max, min)
@@ -276,6 +278,12 @@
        *  sortField {String} 排序字段，默认createdAt
        *
        *  sortOrder {String} 排序方式，asc/desc
+       *
+       *  stripe {Boolean} 是否各行变色
+       * 
+       *  beforeSave {Function} 保存之前处理函数，参数：(form, id)
+       * 
+       *  afterSave {Function} 保存完成之后处理函数，参数：(result)
        */
       options: {
         type: Object,
@@ -402,7 +410,6 @@
       },
       /**
        * @public
-       *
        * 刷新
        */
       onSearch () {

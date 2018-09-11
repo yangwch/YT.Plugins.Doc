@@ -17,6 +17,10 @@
 * dev: `npm run serve`
 * build: `npm run build:doc`
 
+## Update log
+
+* 2018年9月11日 更新treeGrid，mmbsList，table组件
+
 ## License
 
 This project is licensed under [MIT License](http://en.wikipedia.org/wiki/MIT_License)
