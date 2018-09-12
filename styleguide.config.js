@@ -106,6 +106,7 @@ module.exports = {
       loaders
     }
   },
+  styleguideDir: './dist',
   serverPort: 6062,
   showUsage: true,
   showCode: false,
