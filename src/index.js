@@ -14,29 +14,29 @@ import dtime from 'time-formater'
 import 'element-ui/lib/theme-default/index.css'
 */
 var comps = {
-    'yt-component': Component,
-    'yt-tree-grid': ytTreeGrid,
-    'yt-pdf': ytPdf,
-    'yt-list': ytList,
-    'yt-map': ytMap,
-    'yt-combotree': ytCombotree,
-    'yt-dialog': ytDialog
+	'yt-component': Component,
+	'yt-tree-grid': ytTreeGrid,
+	'yt-pdf': ytPdf,
+	'yt-list': ytList,
+	'yt-map': ytMap,
+	'yt-combotree': ytCombotree,
+	'yt-dialog': ytDialog
 };
 
 export default {
-  install: function (Vue){
-      Vue.directive('echarts', echarts);
+	install: function(Vue) {
+		Vue.directive('echarts', echarts);
 
-      for(var key in comps){
-          Vue.component(key, comps[key]);
-      }
+		for (var key in comps) {
+			Vue.component(key, comps[key]);
+		}
 
-      Vue.prototype.$fmtDateTime = (date, format) => {
-        if (date) {
-          return dtime(date).format(format || 'YYYY-MM-DD HH:mm:ss')
-        }
-        return null;
-      }
-  },
-    version: process.env.VERSION
+		Vue.prototype.$fmtDateTime = (date, format) => {
+			if (date) {
+				return dtime(date).format(format || 'YYYY-MM-DD HH:mm:ss')
+			}
+			return null;
+		}
+	},
+	version: process.env.VERSION
 }

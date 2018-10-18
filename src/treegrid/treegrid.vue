@@ -12,107 +12,136 @@
        getSelected
 -->
 <template>
-<div :style="{width:tableWidth}" class='autoTbale'>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th v-for="(column,index) in cloneColumns" :style="tdStyle(column.width, column.type === 'selection' ? 'center' : column.align)">
-          <el-checkbox v-model="checks" @click.prevent.native="handleCheckAll" v-if="column.type === 'selection'"></el-checkbox>
-          <label v-else>
-            {{ renderHeader(column, index) }}
-          </label>  
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(item,index) in initItems" v-show="show(item) && reload" :class="{'child-tr':item.parent, 'selected': item._selected}" @click="RowClick(item, index)">
-        <td v-for="(column,snum) in columns" :style="tdStyle(column.width, column.align)">
-          <el-checkbox-group v-model="checkGroup" @on-change="checkAllGroupChange" v-if="column.type === 'selection'">
-            <el-checkbox :label="item.id"><span style="display:none;">&nbsp;</span></el-checkbox>
-          </el-checkbox-group>
-          <div v-if="column.type === 'action'">
-             <el-button :type="action.type" size="small" @click="RowActionClick(item,$event,index)" v-for='action in (column.actions)' :key='column.text'>{{action.text}}</el-button> 
-          </div>
-          <label @click="toggle(index,item)" v-if="!column.type">
-            <span v-if='column.treeField'>
-              <i v-html='item.spaceHtml'></i>
-              <i v-if="item.children&&item.children.length>0" :class="{'el-icon-caret-right':!item.expanded,'el-icon-caret-bottom':item.expanded }"></i>
-              <i v-else class="ms-tree-space"></i>
-            </span>
-            <span v-html="renderBody(item,column)"></span>
-          </label>  
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+  <div :style="{width:tableWidth}" class='autoTbale'>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th v-for="(column, index) in cloneColumns" :style="tdStyle(column.width, column.type === 'selection' ? 'center' : column.align)" :key="index">
+            <el-checkbox v-model="checks" @click.prevent.native="handleCheckAll" v-if="column.type === 'selection'"></el-checkbox>
+            <label v-else>
+              {{ renderHeader(column, index) }}
+            </label>
+          </th>
+        </tr>
+      </thead>
+      <transition-group tag="tbody" name="bounce">
+        <tr v-for="(item, index) in initItems" :key="index" v-show="show(item) && reload" :class="{'child-tr':item.parent, 'selected': item._selected}" @click="RowClick(item, index)">
+          <td v-for="(column, snum) in columns" :style="tdStyle(column.width, column.align)" :key="snum">
+            <el-checkbox-group v-model="checkGroup" @on-change="checkAllGroupChange" v-if="column.type === 'selection'">
+              <el-checkbox :label="item.id"><span style="display:none;">&nbsp;</span></el-checkbox>
+            </el-checkbox-group>
+            <div v-if="column.type === 'action'">
+              <el-button :type="action.type" size="small" @click="RowActionClick(item,$event,index)" v-for='(action, colindex) in (column.actions)' :key='colindex'>{{action.text}}</el-button>
+            </div>
+            <label v-if="!column.type">
+              <span v-if='column.treeField'>
+                <i v-html='item.spaceHtml'></i>
+                <i @click.stop="toggle(index,item)" v-if="item.children && item.children.length > 0" :class="{'el-icon-caret-right':!item.expanded,'el-icon-caret-bottom':item.expanded }"></i>
+                <i v-else class="ms-tree-space"></i>
+              </span>
+              <span v-html="renderBody(item,column)"></span>
+            </label>
+          </td>
+        </tr>
+      </transition-group>
+    </table>
+  </div>
 </template>
 <style lang="less" scoped>
-  .autoTbale {
-    overflow: auto;
-    tbody .el-checkbox-group{
-      text-align: center;
-    }
-    table {
-      width: 100%;
-      border-spacing: 0;
-      border-collapse: collapse;
-    }
-
-    .table-bordered {
-      border: 1px solid #EBEBEB;
-    }
-
-    .table>tbody>tr>td,
-    .table>tbody>tr>th,
-    .table>thead>tr>td,
-    .table>thead>tr>th {
-      border-top: 1px solid #e7eaec;
-      line-height: 1.42857;
-      padding: 8px;
-      vertical-align: middle;
-    }
-    .table>tbody>tr.selected{
-      background: #edf7ff;
-    }
-
-    .table-bordered>tbody>tr>td,
-    .table-bordered>tbody>tr>th,
-    .table-bordered>tfoot>tr>td,
-    .table-bordered>tfoot>tr>th,
-    .table-bordered>thead>tr>td,
-    .table-bordered>thead>tr>th {
-      border: 1px solid #e7e7e7;
-    }
-
-    .table>thead>tr>th {
-      border-bottom: 1px solid #DDD;
-    }
-
-    .table-bordered>thead>tr>td,
-    .table-bordered>thead>tr>th {
-      background-color: #F5F5F6;
-    }
-
-    label {
-      margin: 0 8px;
-    }
-
-    .ms-tree-space {
-      position: relative;
-      top: 1px;
-      display: inline-block;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 1;
-      width: 14px;
-      height: 14px;
-    }
-
-    .ms-tree-space::before {
-      content: ""
-    }
+/* 行显示动画 */
+.bounce-enter-active {
+  animation: bounce-in .2s;
+}
+.bounce-leave-active {
+  animation: bounce-in .2s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(1, 0);
   }
+  50% {
+    transform: scale(1, 0.8);
+    transform-origin: top;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+/* table 样式 */
+.autoTbale {
+  overflow: auto;
+  color: #606266;
+  tbody .el-checkbox-group {
+    text-align: center;
+  }
+  table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+
+  .table-bordered {
+    border: 1px solid #ebeef5;
+  }
+
+  .table tbody tr td,
+  .table tbody tr th,
+  .table thead tr td,
+  .table thead tr th {
+    border-top: 1px solid #ebeef5;
+    line-height: 1.42857;
+    padding: 6px;
+    vertical-align: middle;
+  }
+  .table > tbody > tr.selected {
+    background: #d6e0e8
+  }
+
+  .table-bordered tbody tr td,
+  .table-bordered tbody tr th,
+  .table-bordered tfoot tr td,
+  .table-bordered tfoot tr th,
+  .table-bordered thead tr td,
+  .table-bordered thead tr th {
+    border: 1px solid #ebeef5;
+    font-size: 14px;
+  }
+
+  .table thead tr th {
+    border-bottom: 1px solid #ebeef5;
+  }
+
+  .table-bordered thead tr td,
+  .table-bordered thead tr th {
+    background-color: #fff;
+    color: #909399;
+    line-height: 24px;
+    padding: 6px;
+    font-weight: 500;
+  }
+
+  label {
+    margin: 0 8px;
+  }
+
+  .ms-tree-space {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    width: 14px;
+    height: 14px;
+  }
+  i.el-icon-caret-bottom:hover, i.el-icon-caret-right:hover {
+    color: red;
+    opacity: .8;
+  }
+  .ms-tree-space::before {
+    content: "";
+  }
+}
 </style>
 <script>
   import * as ElementUI from './../../node_modules/element-ui/lib/index'
@@ -136,7 +165,12 @@
       /**
        * 是否默认展开
        * */
-      expanded: Boolean
+      expanded: Boolean,
+      /**
+       * 过滤节点数据方法
+       * 参数：(value, data)
+       */
+      filterNodeMethod: Function
     },
     data() {
       return {
@@ -275,7 +309,8 @@
           item = Object.assign({}, item, {
             parent: parent,
             level: level,
-            spaceHtml: spaceHtml
+            spaceHtml: spaceHtml,
+            isShow: true
           });
           if (typeof item.expanded == "undefined") {
             item = Object.assign({}, item, {
@@ -304,7 +339,7 @@
       },
       //   隐藏显示
       show(item) {
-        return item.level == 1 || (item.parent && item.isShow);
+        return ((typeof item._filter === 'boolean' && item._filter) || typeof item._filter === 'undefined') && ((item.level == 1 && item.isShow) || (item.parent && item.isShow));
       },
       toggle(index, item) {
         let level = item.level + 1;
@@ -318,15 +353,22 @@
           item.expanded = !item.expanded;
         }
       },
-      /* 展开 */
-      open(index, item) {
+      /*
+       * 展开
+       * @param {Number} index 索引号，无实际意义
+       * @param {Object} item 节点
+       * @param {Boolean} setShow 是否主动修改子节点的isShow为true，默认修改
+       */
+      open(index, item, setShowTrue = true) {
         if (item.children) {
           this.reload = false;
           let self = this;
           this.initItems.forEach(function(firstLelItem, fIndex) {
             item.children.forEach((child, childIndex) => {
               if (firstLelItem.id == child.id) {
-                firstLelItem.isShow = true;
+                if (setShowTrue) {
+                  firstLelItem.isShow = true;
+                }
                 if (firstLelItem.expanded) {
                   self.open(fIndex, child);
                 }
@@ -337,7 +379,7 @@
         }
       },
       /* 关闭 */
-      close(index, item) {
+      close(index, item, setShowFalse = true) {
         if (item.children) {
           this.reload = false;
           let self = this;
@@ -359,8 +401,9 @@
           this.reload = true;
         }
       },
-      // checkbox 全选 选择事件
-      /** @function */
+      /**
+       * checkbox 全选 选择事件
+       */
       handleCheckAll() {
         this.checks = !this.checks;
         if (this.checks) {
@@ -549,7 +592,7 @@
             return item.id === (typeof parent === 'string' ? parent : parent.id)
           })
         }
-        row = Object.assign(row, {isShow: (parentNode && parentNode.expanded) || true})
+        row = Object.assign({}, row, {isShow: (parentNode && parentNode.expanded) || true})
         if (parentNode && !parentNode.children) {
           this.$set(parentNode, 'children', [row])
         } else if (parentNode && parentNode.children && typeof parentNode.children === 'object') {
@@ -587,6 +630,47 @@
        */
       getData () {
         return this.initItems
+      },
+      /**
+       * @public
+       * 过滤节点
+       * @param {String} value 过滤字符串
+       */
+      filter (value = '') {
+        let filterNodeMethod = this.filterNodeMethod
+        if (!filterNodeMethod) { throw new Error('filterNodeMethod is required') }
+        
+        let toggleNode = (node, show) => {
+          let item = this.initItems.find(initItem => {
+            return initItem.id === node.id
+          })
+          if (show) {
+            Object.assign(item, {isShow: true, '_filter': true, expanded: true})
+            this.open(1, item, false)
+          } else {
+            this.close(2, item)
+            Object.assign(item, {isShow: false, '_filter': false, expanded: false})
+          }
+        }
+        let traverse = (node) => {
+          let childNodes = node.children
+          if (childNodes && childNodes.length) {
+            let exist = filterNodeMethod(value, node)
+            childNodes.forEach((child, index) => {
+              let isFind = traverse(child)
+              toggleNode(child, isFind)
+              if (isFind) { exist = true }
+            })
+            toggleNode(node, exist)
+          } else {
+            let flag = filterNodeMethod(value, node)
+            toggleNode(node, flag)
+            return flag
+          }
+        }
+        this.items.forEach(item => {
+          traverse(item)
+        })
       }
     }
   }

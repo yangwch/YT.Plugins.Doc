@@ -5,6 +5,7 @@
   <div>
     <el-table
       ref="table"
+      :height="height"
       :border="border"
       :fit="fit"
       :stripe="stripe"
@@ -21,14 +22,14 @@
     <div
       v-if="pagination"
       class="Pagination"
-      style="text-align: left;margin-top: 10px;">
+      style="text-align: left;margin: 6px 0;">
       <el-pagination
         v-if="reload"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-sizes="pageSizes"
-        :page-size="limit"
+        :page-size="limitNum"
         layout="total, -> ,sizes, -> , prev, pager, next"
         :total="count"
       />
@@ -47,16 +48,10 @@
 </style>
 
 <script>
-  // import { defPageSize } from '@/config/index'
-  import * as ElementUI from 'element-ui/lib/index'
-  const defPageSize = 15
+  import { defPageSize } from './../config/index'
+
   export default {
     name: 'yt-table',
-    components: {
-      ElPagination: ElementUI.Pagination,
-      ElTable: ElementUI.Table,
-      ElTableColumn: ElementUI.TableColumn
-    },
     props: {
       /** 列宽是否自撑开 */
       fit: {
@@ -84,15 +79,21 @@
         },
         required: false
       },
+      /** 默认分页数 */
+      limit: {
+        type: Number,
+        default() {
+          return (this.$sysConfig && this.$sysConfig.defPageSize) || defPageSize
+        }
+      },
       /**
-       * 查询Api,方法；
-       * 参数： {page: 1, rows: 15, params: {}, _order: null}
+       * 查询数据的API方法，每次刷新/翻页时调用，参数中包括 当前页码 page(从1开始）, 每页条数 rows, 查询参数 params
        */
       searchApi: {
         type: Function,
         required: true
       },
-      /** 查询参数 */
+      /** 默认查询参数 */
       params: {
         type: Object,
         default() {
@@ -109,15 +110,16 @@
           return true
         }
       },
-      /**
-       * 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。
-       * Function({row, rowIndex})/String
-       */
+      /** 表格行样式 */
       tableRowClassName: {
-        type: [Function, String],
+        type: Function,
         required: false
       },
-      /** 创建的时候自动去请求数据 */
+      /** 表格的高度 */
+      height: {
+        type: [String, Number]
+      },
+      /* 创建的时候自动去请求数据 */
       autoInit: {
         type: Boolean,
         default: true
@@ -125,13 +127,12 @@
     },
     /*  数据 */
     data() {
-      let limit = (this.$sysConfig && this.$sysConfig.defPageSize) || defPageSize
       return {
         reload: true,
         tableData: [],
+        limitNum: this.limit,
         currentRow: null,
         offset: 0,
-        limit: limit,
         count: 0,
         currentPage: 1,
         emptyText: '暂无数据',
@@ -140,6 +141,7 @@
         tmpParams: {}
       }
     },
+    components: {},
     created() {
       if (this.autoInit) {
         this.initData()
@@ -155,18 +157,19 @@
       },
       /*  页码数量变化 */
       handleSizeChange(val) {
-        this.limit = val
+        this.limitNum = val
         this.getApiData()
       },
       /*  当前页变化事件 */
       handleCurrentChange(val) {
         this.currentPage = val
-        this.offset = (val - 1) * this.limit
+        this.offset = (val - 1) * this.limitNum
         this.getApiData()
       },
       /**
-       * 行选中事件：参数 selection
-       * @event onCurrentChange(selection)
+       * 行选中事件，参数为当前选中行
+       * @event onCurrentChange
+       * @type {Array}
        */
       onCurrentChange(selection) {
         this.currentRow = selection
@@ -176,15 +179,36 @@
       onSelectionChange(selection) {
         this.selection = selection
       },
-      /* 获取选中 */
+      /**
+       * 获取选中行数据
+       * @public
+       * @returns {Array} 选中行数据
+       */
       getSelection() {
         return this.selection
       },
-      /* 获取当前行 */
+      /**
+       * 用于多选表格，切换某一行的选中状态，如果使用了第二个参数，则是设置这一行选中与否（selected 为 true 则选中）
+       * @public
+       * @param {Object} row 行对象
+       * @param {Boolean} selection 是否选中，不传则切换选中状态
+       */
+      toggleRowSelection (row, selection) {
+        this.$refs.table.toggleRowSelection(row, selection)
+      },
+      /**
+       * 获取当前行
+       * @public
+       * @returns {Object} 当前行数据
+       */
       getCurrentRow() {
         return this.currentRow
       },
-      /*  返回当前表格装载数据 */
+      /**
+       * 返回当前表格装载数据
+       * @public
+       * @returns {Array} 表格数据
+       */
       getTableData() {
         return this.tableData
       },
@@ -192,7 +216,7 @@
       async getApiData(paramsData) {
         var params = {} // this.params
         params.page = this.currentPage
-        params.rows = this.limit
+        params.rows = this.limitNum
         params.params = paramsData || Object.assign({}, this.params, this.tmpParams)
         params._order = this.orderOption
         this.emptyText = '加载中。。。'
@@ -204,13 +228,22 @@
         this.emptyText = '暂无数据'
         this.reload = true
       },
-      /*  查询 */
+      /**
+       * 查询刷新表格
+       * @public
+       * @param {Object} params 参数对象
+       * @returns none
+       */
       search(params) {
         this.tmpParams = params || {}
         let paramsData = Object.assign({}, this.params, params)
         this.getApiData(paramsData)
       },
-      /*  取消选中 */
+      /**
+       * 取消选中
+       * @public
+       * @returns none
+       */
       clearSelection() {
         this.$refs.table.clearSelection()
       },
@@ -221,7 +254,15 @@
         this.orderOption = orderOption
         this.getApiData()
       },
-      /* 改变单条数据 */
+      /**
+       * 
+       * 改变单条数据
+       * @public
+       * @param {Object} obj 更新，创建，删除的行对象，使用“id”属性标识
+       * @param {Object} type 操作类型（create/update/delete）
+       * @returns none
+       * 
+       */
       changeOneData(obj, type) {
         this.tableData.forEach((item, index) => {
           if (item.id === obj.id) {
@@ -236,6 +277,15 @@
           this.tableData.unshift(obj)
           this.tableData.pop()
         }
+      },
+      /**
+       * 改变全部数据
+       * @public
+       * @param {Array} data 数据列表
+       * @returns none
+       */
+      changeAllData(data) {
+        this.tableData = [].concat(data)
       }
     }
   }

@@ -4,5 +4,3 @@
 * ElTable
 * ElTableColumn
 * ElPagination
-### slot
-* columns 表格列，引用ElmentUI ... el-table-column

@@ -10,28 +10,25 @@
 * open  -   Dialog 打开的回调
 ```js
 new Vue({
-    components: {
-      ElButton: require('element-ui').Button
-    },
     template: `
     <div style="position:relative">
-        <input type="button" value="点击弹出Dialog" @click="dialogVisible=true" />
-        <yt-dialog
-          title="鼠标放到标题上可以拖动哦"
-          :visible.sync="dialogVisible"
-          size="tiny">
-          <span>这是一段信息</span>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-          </span>
-        </yt-dialog>
+      <el-button @click="dialogVisible=true">弹出对话框</el-button>
+      <yt-dialog
+        title="鼠标放到标题上可以拖动哦"
+        :visible.sync="dialogVisible"
+        size="tiny">
+        <span>这是一段信息</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </yt-dialog>
     </div>
     `,
     data() {
-        return {
-            dialogVisible: false
-        }
+      return {
+        dialogVisible: false
+      }
     }
 })
 ```
