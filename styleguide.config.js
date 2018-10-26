@@ -113,7 +113,8 @@ module.exports = {
 	},
 	require: [
 		'element-ui/lib/theme-chalk/index.css',
-		'./src/dependencies'
+		'./src/dependencies',
+    './static/css/base.css'
 	],
 	styleguideDir: './dist',
 	serverPort: 6062,

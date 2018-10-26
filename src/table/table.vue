@@ -169,15 +169,20 @@
       /**
        * 行选中事件，参数为当前选中行
        * @event onCurrentChange
-       * @type {Array}
+       * @type {Object}
        */
       onCurrentChange(selection) {
         this.currentRow = selection
         this.$emit('onCurrentChange', selection)
       },
-      /*  当选择项变化时触发 */
+      /**
+       * 当选择项变化时触发
+       * @event onSelectionChange
+       * @type {Array}
+       */
       onSelectionChange(selection) {
         this.selection = selection
+        this.$emit('onSelectionChange', selection)
       },
       /**
        * 获取选中行数据

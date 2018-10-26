@@ -37,7 +37,9 @@
       :pagination="pagination"
       :page-sizes="pageSizes"
       :search-api="searchApi"
-      :tableRowClassName='tableRowClassName'>
+      :tableRowClassName='tableRowClassName'
+      @onCurrentChange="onCurrentChange"
+      @onSelectionChange="onSelectionChange">
         <template slot="columns">
           <!-- @slot 列配置 -->
           <slot name="columns">
@@ -186,6 +188,15 @@ export default {
       this.$refs.tablePl.search(tmpParams);
     },
     /**
+     * 刷新数据
+     * @public
+     * @param {Object} params 参数对象
+     * @returns none
+     */
+    refresh (params) {
+      this.onSearch(params)
+    },
+    /**
      * 取消选中
      * @public
      * @returns none
@@ -202,8 +213,23 @@ export default {
      */
     changeOneData(obj, type) {
       this.$refs.tablePl.changeOneData(obj, type);
+    },
+    /**
+     * 当前行选择变化事件
+     * @event onCurrentChange
+     * @type {Object}
+     */
+    onCurrentChange (currentRow) {
+      this.$emit('onCurrentChange', currentRow)
+    },
+    /**
+     * 当选择项变化时触发，多选
+     * @event onSelectionChange
+     * @type {Object}
+     */
+    onSelectionChange (selection) {
+      this.$emit('onSelectionChange', selection)
     }
   }
 };
 </script>
-
